@@ -1,6 +1,8 @@
 package fr.univ_amu.iut.exercice5;
 
 import com.google.inject.Inject;
+import javafx.beans.binding.Bindings;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -46,10 +48,23 @@ public class PokemonController {
     //      - labelStatut    <-  statutProperty() (sens unique) ;
     //      - boutonAjouter désactivé tant que la recherche est vide
     //        (disableProperty().bind(rechercheProperty().isEmpty())).
+    colNumero.setCellValueFactory(
+        c -> new SimpleStringProperty(String.valueOf(c.getValue().numero())));
+    colNom.setCellValueFactory(c -> new SimpleStringProperty(c.getValue().nom()));
+    colType.setCellValueFactory(c -> new SimpleStringProperty(c.getValue().type()));
+
+    table.setItems(viewModel.pokemonsProperty());
+
+    labelResume.textProperty().bind(viewModel.resumeProperty());
+
+    Bindings.bindBidirectional(champRecherche.textProperty(), viewModel.rechercheProperty());
+    labelStatut.textProperty().bind(viewModel.statutProperty());
+    boutonAjouter.disableProperty().bind(viewModel.rechercheProperty().isEmpty());
   }
 
   @FXML
   private void surAjouter() {
     // TODO exercice 5 : déclencher la commande d'ajout du ViewModel.
+    viewModel.ajouter();
   }
 }
