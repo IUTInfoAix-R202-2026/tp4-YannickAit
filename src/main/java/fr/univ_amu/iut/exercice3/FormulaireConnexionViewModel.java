@@ -36,7 +36,7 @@ public class FormulaireConnexionViewModel {
     // TODO exercice 3 : rendre le formulaire "validable" uniquement quand
     // l'identifiant ET le mot de passe sont non vides.
     //
-    // Astuce : validable.bind(identifiant.isNotEmpty().and(motDePasse.isNotEmpty()));
+    validable.bind(identifiant.isNotEmpty().and(motDePasse.isNotEmpty()));
   }
 
   public StringProperty identifiantProperty() {
@@ -67,5 +67,12 @@ public class FormulaireConnexionViewModel {
     // 3. Selon le résultat, publier un message clair dans statut :
     //    - succès : "Bienvenue " + identifiant + " !"
     //    - échec  : "Identifiants incorrects. Vérifiez votre saisie."
+    statut.set("Connexion en cours...");
+    boolean succes = serviceAuth.connecter(identifiant.get(), motDePasse.get());
+    if (succes) {
+      statut.set("Bienvenue " + identifiant.get() + " !");
+    } else {
+      statut.set("Identifiants incorrects. Vérifiez votre saisie.");
+    }
   }
 }

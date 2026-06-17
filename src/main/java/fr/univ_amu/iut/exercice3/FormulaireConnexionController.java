@@ -1,5 +1,6 @@
 package fr.univ_amu.iut.exercice3;
 
+import javafx.beans.binding.Bindings;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -34,11 +35,15 @@ public class FormulaireConnexionController {
     // - champMotDePasse  <-> motDePasseProperty  (bidirectionnel)
     // - labelStatut      <-  statutProperty      (sens unique)
     // - boutonValider désactivé tant que le formulaire n'est pas validable :
-    //     boutonValider.disableProperty().bind(viewModel.validableProperty().not());
+    boutonValider.disableProperty().bind(viewModel.validableProperty().not());
+    Bindings.bindBidirectional(champIdentifiant.textProperty(), viewModel.identifiantProperty());
+    Bindings.bindBidirectional(champMotDePasse.textProperty(), viewModel.motDePasseProperty());
+    labelStatut.textProperty().bind(viewModel.statutProperty());
   }
 
   @FXML
   private void surValider() {
     // TODO exercice 3 : déclencher la commande de connexion.
+    viewModel.connecterCommand();
   }
 }
